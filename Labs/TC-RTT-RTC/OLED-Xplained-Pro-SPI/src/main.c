@@ -136,9 +136,9 @@ void pisca_led(Pio *p_pio, uint32_t mask,int n, int t){
 	}
 }
 
-static float get_time_rtt(){
-	uint ul_previous_time = rtt_read_timer_value(RTT);
-}
+// static float get_time_rtt(){
+// 	uint ul_previous_time = rtt_read_timer_value(RTT);
+// }
 
 void TC_init(Tc * TC, int ID_TC, int TC_CHANNEL, int freq){
 	uint32_t ul_div;
