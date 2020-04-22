@@ -51,6 +51,7 @@ typedef struct {
 	uint32_t colorOn;   // cor do botão acionado
 	uint32_t colorOff;  // cor do botão desligado
 	uint8_t  status;
+	void (*funcao)(void);
 	uint32_t x;         // posicao x
 	uint32_t y;         // posicao y
 } t_but;
@@ -60,6 +61,16 @@ QueueHandle_t xQueueTouch;
 /************************************************************************/
 /* handler/callbacks                                                    */
 /************************************************************************/
+
+void callback_but0(){
+	printf("botão 1 apertado\n");
+}
+void callback_but1(){
+	printf("botão 2 apertado\n");
+}
+void callback_but2(){
+	printf("botão 3 apertado\n");
+}
 
 
 /************************************************************************/
@@ -267,9 +278,9 @@ void task_lcd(void){
 	draw_screen();
 	font_draw_text(&digital52, "DEMO - BUT", 0, 0, 1);
 
-	t_but but0 = {.width = 120, .height = 75,.colorOn = COLOR_TOMATO, .colorOff = COLOR_BLACK, .x = ILI9488_LCD_WIDTH/2, .y = 40, .status = 1};
-	t_but but1 = {.width = 120, .height = 75,.colorOn = COLOR_GOLD, .colorOff = COLOR_BLACK, .x = ILI9488_LCD_WIDTH/2, .y = 140, .status = 1};
-	t_but but2 = {.width = 120, .height = 75,.colorOn = COLOR_GREEN, .colorOff = COLOR_BLACK, .x = ILI9488_LCD_WIDTH/2, .y = 240, .status = 1};
+	t_but but0 = {.width = 120, .height = 75,.colorOn = COLOR_TOMATO, .colorOff = COLOR_BLACK, .x = ILI9488_LCD_WIDTH/2, .y = 40, .status = 1, .funcao = &callback_but0};
+	t_but but1 = {.width = 120, .height = 75,.colorOn = COLOR_GOLD, .colorOff = COLOR_BLACK, .x = ILI9488_LCD_WIDTH/2, .y = 140, .status = 1, .funcao = &callback_but1};
+	t_but but2 = {.width = 120, .height = 75,.colorOn = COLOR_GREEN, .colorOff = COLOR_BLACK, .x = ILI9488_LCD_WIDTH/2, .y = 240, .status = 1, .funcao = &callback_but2};
 		
 	t_but botoes[] = {but0, but1, but2};
 	
@@ -288,10 +299,10 @@ void task_lcd(void){
 			//update_screen(touch.x, touch.y);
 			int b = process_touch(botoes, touch, 3);
 			if(b >= 0){
+				botoes[b].funcao();
 				botoes[b].status =  !botoes[b].status;
 				draw_button_new(botoes[b]);
 			}
-			
 			
 // 			but0.status = ! but0.status;
 // 			but1.status = ! but1.status;
