@@ -32,6 +32,14 @@ volatile bool g_is_conversion_done = false;
 /** The conversion data value */
 volatile uint32_t g_ul_value = 0;
 
+typedef struct {
+	  uint value;
+} adcData;
+
+QueueHandle_t xQueueADC;
+
+
+
 /************************************************************************/
 /* prototypes                                                           */
 /************************************************************************/
@@ -61,12 +69,6 @@ typedef struct {
   uint x;
   uint y;
 } touchData;
-
-typedef struct {
-	uint value;
-} adcData;
-
-QueueHandle_t xQueueADC;
 
 QueueHandle_t xQueueTouch;
 
@@ -147,6 +149,8 @@ static void configure_lcd(void){
 /************************************************************************/
 /* funcoes                                                              */
 /************************************************************************/
+
+
 
 static void config_AFEC_pot(Afec *afec, uint32_t afec_id, uint32_t afec_channel, afec_callback_t callback){
   /*************************************
